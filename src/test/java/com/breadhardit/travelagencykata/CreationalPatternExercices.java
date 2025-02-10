@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,7 +19,7 @@ public class CreationalPatternExercices {
      */
     @Data
     @Builder
-    public class Movement {
+    public static class Movement {
         public enum MovementType {DEPOSIT,WITHDRAWAL}
         String id;
         MovementType type;
@@ -28,9 +29,9 @@ public class CreationalPatternExercices {
     @Data
     @RequiredArgsConstructor
     public static class Account {
-        public static ConcurrentHashMap<String,Movement> MOVEMENTS;
+        public static final ConcurrentHashMap<String,Movement> MOVEMENTS = new ConcurrentHashMap<>();
         final String id;
-        Long balance;
+        Long balance = 0L;
         public void addMovement(Movement movement) {
             MOVEMENTS.put(movement.getId(),movement);
             if (Movement.MovementType.DEPOSIT.equals(movement.getType())) {
@@ -41,11 +42,16 @@ public class CreationalPatternExercices {
             log.info("Current balance: {}",balance);
         }
     }
-    public void operate() {
+    @Test
+    public void test() {
         Account account = new Account(UUID.randomUUID().toString());
         account.addMovement(Movement.builder().id("1").type(Movement.MovementType.DEPOSIT).amount(1000L).description("INGRESO").build());
-        account.addMovement(Movement.builder().id("1").type(Movement.MovementType.DEPOSIT).amount(10L).description("GASTOS VARIOS").build());
+        account.addMovement(Movement.builder().id("1").type(Movement.MovementType.WITHDRAWAL).amount(10L).description("GASTOS VARIOS").build());
     }
-    // Made the refactor to create new movement types, and avoid scallability issues applying the proper creational pattern. Remember also SOLID principles
+    /* TODO
+        Made the refactor to create new movement types, and avoid scalability issues applying the proper creational pattern.
+        Remember, our code MUST follow SOLID Principles, so refactor the classes you need to accomplish it
+     */
+
 
 }
