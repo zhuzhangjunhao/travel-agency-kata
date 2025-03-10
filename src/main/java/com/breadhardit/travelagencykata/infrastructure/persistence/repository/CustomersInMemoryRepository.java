@@ -1,15 +1,11 @@
 package com.breadhardit.travelagencykata.infrastructure.persistence.repository;
 
-import com.breadhardit.travelagencykata.domain.Customer;
 import com.breadhardit.travelagencykata.application.port.CustomersRepository;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Repository;
+import com.breadhardit.travelagencykata.domain.Customer;
 
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Repository
-@Scope("singleton")
 public class CustomersInMemoryRepository implements CustomersRepository {
     private final ConcurrentHashMap<String,Customer> customersById = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String,Customer> customersByPassport = new ConcurrentHashMap<>();

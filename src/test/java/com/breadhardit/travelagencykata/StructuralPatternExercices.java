@@ -17,16 +17,16 @@ public class StructuralPatternExercices {
      * the elements queried
      */
     @Value
-    public static class Food {
+    public static class Food implements FoodObject{
         String name;
         Long caloresPer100g;
         Long weight;
-        Long getCalories() {
+        public Long getCalories() {
             return caloresPer100g * weight;
         }
     }
     @Value
-    public static class Dish {
+    public static class Dish implements FoodObject{
         String name;
         List<Food> foodList;
         public void addIngredient(Food food) {
@@ -37,13 +37,21 @@ public class StructuralPatternExercices {
             return this.foodList.stream().collect(Collectors.summarizingLong(Food::getCalories)).getSum();
         }
     }
-    public Long getCalores() {
+    public interface FoodObject{
+        Long getCalories();
+    }
+
+    public Long getCalores(List<FoodObject> menu) {
         /* TODO
          * Refactor classes and codify a method which returns the sum of calories of a Menu.
          * A menu can is a list of Dishes, or individuals Food, see following example
          * Use the proper structural pattern
          */
-        return 0L;
+        Long calories = 0L;
+        for (FoodObject object : menu) {
+            calories += object.getCalories();
+        }
+        return calories;
     }
     @Test
     public void testCalories() {
@@ -57,7 +65,7 @@ public class StructuralPatternExercices {
         Food beer = new Food("BEER", 80L, 330L);
         Dish completeBuger = new Dish("COMPLETE BURGER", List.of(potato, bread, burger));
         Dish greenSalad = new Dish("GREEN SALAD", List.of(lettuce, tomato));
-        List<Object> menu = List.of(greenSalad, completeBuger, ketchup, apple);
-        log.info("Calories: {}", getCalores());
+        List<FoodObject> menu = List.of(greenSalad, completeBuger, ketchup, apple);
+        log.info("Calories: {}", getCalores(menu));
     }
 }
