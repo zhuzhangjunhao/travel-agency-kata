@@ -29,6 +29,25 @@ Have you tried to use Linux?
 
 See file [KATA_INSTRUCTIONS.md](KATA_INSTRUCTIONS.md)
 
+# CI/CD instructions
+
+## How to test application:
+
+```mvn test```
+
+## How to build a docker image
+
+For building a dockerfile, firstly you must package the project into an executable jar file. If you executed the tests in a previous step, you can skip tests execution:
+
+```mvn package -DskipTests=true```
+
+Then, you'll have a executable jar file in ```target``` folder.
+
+Then, you can run your docker build command. You must run it on root folde:
+
+```docker build -t <app-name> .```
+
+
 
   
 
