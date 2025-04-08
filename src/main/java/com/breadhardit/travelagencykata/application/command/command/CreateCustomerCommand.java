@@ -5,18 +5,20 @@ import com.breadhardit.travelagencykata.domain.Customer;
 import java.time.LocalDate;
 import java.util.UUID;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.Value;
 
 @Value
 @Builder
-public class CreateCustomerCommand {
-  String id = UUID.randomUUID().toString();
-  String name;
-  String surnames;
-  LocalDate birthDate;
-  String passportNumber;
-  CustomersRepository customersRepository;
+public final class CreateCustomerCommand {
+  @Getter @Setter private String id = UUID.randomUUID().toString();
+  @Getter @Setter private String name;
+  @Getter @Setter private String surnames;
+  @Getter @Setter private LocalDate birthDate;
+  @Getter @Setter private String passportNumber;
+  @Getter @Setter private CustomersRepository customersRepository;
 
   @SneakyThrows
   public String handle() {

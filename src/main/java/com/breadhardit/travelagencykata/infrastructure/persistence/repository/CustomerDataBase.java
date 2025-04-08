@@ -15,7 +15,7 @@ public class CustomerDataBase implements CustomersRepository {
   private final CustomersJPARepository customersJPARepository;
 
   @Override
-  public void saveCustomer(Customer customer) {
+  public void saveCustomer(final Customer customer) {
     CustomerEntity customerEntity =
         CustomerEntity.builder()
             .id(customer.getId())
@@ -30,7 +30,7 @@ public class CustomerDataBase implements CustomersRepository {
   }
 
   // Convertir un CustomerEntity a customer
-  private Customer parseCustomer(CustomerEntity customer) {
+  private Customer parseCustomer(final CustomerEntity customer) {
     return Customer.builder()
         .id(customer.getId())
         .name(customer.getName())
@@ -44,13 +44,13 @@ public class CustomerDataBase implements CustomersRepository {
   // Obtengo un el respositorio de customer y mediante this::parseCustomer realizo un parse a
   // Customer
   @Override
-  public Optional<Customer> getCustomerById(String id) {
+  public Optional<Customer> getCustomerById(final String id) {
     Optional<CustomerEntity> customerEntity = customersJPARepository.findById(id);
     return customerEntity.map(this::parseCustomer);
   }
 
   @Override
-  public Optional<Customer> getCustomerByPassport(String id) {
+  public Optional<Customer> getCustomerByPassport(final String id) {
     Optional<CustomerEntity> customerEntity = customersJPARepository.findByPassportNumber(id);
     return customerEntity.map(this::parseCustomer);
   }

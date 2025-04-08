@@ -12,7 +12,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
@@ -20,11 +25,19 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RequiredArgsConstructor
 public class CustomersController {
 
-  final CustomersRepository customersRepository;
+  private final CustomersRepository customersRepository;
 
+  /**
+   * Creates a new customer.
+   *
+   * <p>This method is not intended for extension.
+   *
+   * @param customer The data for the new customer. Must not be null.
+   * @return A ResponseEntity with the URI of the newly created customer.
+   */
   @PutMapping("/customers")
   @Transactional
-  public ResponseEntity putCustomer(@RequestBody PutCustomerDTO customer) {
+  public ResponseEntity putCustomer(@RequestBody final PutCustomerDTO customer) {
     log.info("POST customer {}", customer);
     CreateCustomerCommand command =
         CreateCustomerCommand.builder()
@@ -43,8 +56,16 @@ public class CustomersController {
         .build();
   }
 
+  /**
+   * Retrieves a customer by their ID.
+   *
+   * <p>This method is not intended for extension.
+   *
+   * @param customerId The ID of the customer to retrieve. Must not be null or empty.
+   * @return A ResponseEntity containing the customer's information, or no content if not found.
+   */
   @GetMapping("/customers/{customer-id}")
-  public ResponseEntity getCustomer(@PathVariable String customerId) {
+  public ResponseEntity getCustomer(@PathVariable final String customerId) {
     log.info("Getting the customer {}", customerId);
     Optional<Customer> customer =
         GetCustomerQuery.builder()
@@ -63,9 +84,19 @@ public class CustomersController {
                 .build());
   }
 
+  /**
+   * Retrieves a customer by their passport number.
+   *
+   * <p>This method is not intended for extension.
+   *
+   * @param passportNumber The passport number of the customer to retrieve. Must not be null or
+   *     empty.
+   * @return A ResponseEntity containing a list with the customer's information, or no content if
+   *     not found.
+   */
   @GetMapping("/customers")
   public ResponseEntity getCustomers(
-      @RequestParam(name = "passport-number") String passportNumber) {
+      @RequestParam(name = "passport-number") final String passportNumber) {
     log.info("Getting the customer with the passport {}", passportNumber);
     Optional<Customer> customer =
         GetCustomerQuery.builder()

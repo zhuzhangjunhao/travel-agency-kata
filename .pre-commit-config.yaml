@@ -9,20 +9,20 @@ repos:
         entry: mvn --quiet spotless:apply
         language: system
         pass_filenames: false  # ✅ Esta línea es clave
-        stages: [commit]
+        stages: [pre-commit]
 
-#      - id: checkstyle
-#        name: Checkstyle
-#        entry: mvn --quiet checkstyle:check
-#        language: system
-#        pass_filenames: false
-#        stages: [commit]
+      - id: checkstyle
+        name: Checkstyle
+        entry: mvn --quiet checkstyle:check
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
 
       - id: tests
         name: Run tests
         entry: mvn test
         language: system
         pass_filenames: false
-        stages: [ commit ]
+        stages: [ pre-commit ]
 
 

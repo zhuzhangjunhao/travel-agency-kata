@@ -8,34 +8,50 @@ import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "CUSTOMERS")
 @Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor // Added explicit NoArgsConstructor
 public class CustomerEntity {
   @Id
   @Column(name = "ID")
-  String id;
+  @Getter
+  @Setter
+  private String id;
 
   @Column(name = "NAME")
-  String name;
+  @Getter
+  @Setter
+  private String name;
 
   @Column(name = "SURNAMES")
-  String surnames;
+  @Getter
+  @Setter
+  private String surnames;
 
   @Column(name = "BIRTH_DATE")
-  LocalDate birthDate;
+  @Getter
+  @Setter
+  private LocalDate birthDate;
 
   @Column(name = "PASSPORT_NUMBER")
-  String passportNumber;
+  @Getter
+  @Setter
+  private String passportNumber;
 
   @Column(name = "ENROLLMENT_DATE")
-  LocalDate enrollmentDate;
+  @Getter
+  @Setter
+  private LocalDate enrollmentDate;
 
   @Column(name = "ACTIVE")
-  Boolean active;
-
-  public CustomerEntity() {}
+  @Getter
+  @Setter
+  private Boolean active;
 }
