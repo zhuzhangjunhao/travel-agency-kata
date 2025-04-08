@@ -36,7 +36,6 @@ jobs:
 
       - name: Push to Docker Hub
         run: |
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/travel-agency:${{ github.sha }}
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/travel-agency:latest
 
       - name: Trigger Render Deployment
