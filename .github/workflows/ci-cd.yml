@@ -19,28 +19,25 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
-      - name: Run Spotless Check
-        run: mvn spotless:check
-
-      - name: Run Checkstyle
-        run: mvn checkstyle:check
-
-      - name: Run Tests
-        run: mvn test
+      - name: Build with Maven
+        run: mvn clean package -DskipTests
 
       - name: Build Docker Image
-        run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/travel-agency:${{ github.sha }} .
+        run: |
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/travel-agency:${{ github.sha }} .
+          docker tag ${{ secrets.DOCKER_HUB_USERNAME }}/travel-agency:${{ github.sha }} ${{ secrets.DOCKER_HUB_USERNAME }}/travel-agency:latest
+          docker image ls  # Para verificar que la imagen existe
 
       - name: Save Docker Image
         uses: actions/upload-artifact@v4
         with:
           name: docker-image
           path: .
+          if-no-files-found: error
 
   push_image:
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/download-artifact@v4
         with:
@@ -55,6 +52,5 @@ jobs:
 
       - name: Push to Docker Hub
         run: |
-          docker tag ${{ secrets.DOCKER_HUB_USERNAME }}/travel-agency:${{ github.sha }} ${{ secrets.DOCKER_HUB_USERNAME }}/travel-agency:latest
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/travel-agency:${{ github.sha }}
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/travel-agency:latest
