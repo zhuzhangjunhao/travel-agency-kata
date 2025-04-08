@@ -1,0 +1,28 @@
+# .pre-commit-config.yaml
+minimum_pre_commit_version: '2.9.2'
+
+repos:
+  - repo: local
+    hooks:
+      - id: spotless-apply
+        name: Spotless Apply
+        entry: mvn --quiet spotless:apply
+        language: system
+        pass_filenames: false  # ✅ Esta línea es clave
+        stages: [commit]
+
+#      - id: checkstyle
+#        name: Checkstyle
+#        entry: mvn --quiet checkstyle:check
+#        language: system
+#        pass_filenames: false
+#        stages: [commit]
+
+      - id: tests
+        name: Run tests
+        entry: mvn test
+        language: system
+        pass_filenames: false
+        stages: [ commit ]
+
+
