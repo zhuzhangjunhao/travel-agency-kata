@@ -24,8 +24,7 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/travel-agency:${{ github.sha }} .
-          docker tag ${{ secrets.DOCKER_HUB_USERNAME }}/travel-agency:${{ github.sha }} ${{ secrets.DOCKER_HUB_USERNAME }}/travel-agency:latest
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/travel-agency:latest .
           docker image ls  # Para verificar que la imagen existe
 
   push_image:
@@ -40,7 +39,6 @@ jobs:
 
       - name: Push to Docker Hub
         run: |
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/travel-agency:${{ github.sha }}
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/travel-agency:latest
 
 
